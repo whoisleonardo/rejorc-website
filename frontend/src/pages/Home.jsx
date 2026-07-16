@@ -147,7 +147,7 @@ export default function Home() {
       <section className="container" style={{ padding: '0 32px 96px' }}>
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 24, marginBottom: 36, flexWrap: 'wrap' }}>
           <h2 style={{ font: '700 32px var(--font-display)', margin: 0 }}>Coisas que já fizemos</h2>
-          <Link to="/fotos" style={{ font: '800 15px var(--font-body)', color: 'var(--purple)', textDecoration: 'none' }}>
+          <Link to="/midias" style={{ font: '800 15px var(--font-body)', color: 'var(--purple)', textDecoration: 'none' }}>
             Ver galeria completa →
           </Link>
         </div>

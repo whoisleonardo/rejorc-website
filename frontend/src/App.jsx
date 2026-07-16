@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ContentProvider } from './content/ContentContext';
 
@@ -49,7 +49,9 @@ export default function App() {
             <Route index element={<Home />} />
             <Route path="sobre" element={<Sobre />} />
             <Route path="materias" element={<Materias />} />
-            <Route path="fotos" element={<Fotos />} />
+            <Route path="midias" element={<Fotos />} />
+            {/* endereco antigo continua funcionando */}
+            <Route path="fotos" element={<Navigate to="/midias" replace />} />
             <Route path="atualizacoes" element={<Atualizacoes />} />
             <Route path="contato" element={<Contato />} />
             <Route path="newsletter/sair" element={<NewsletterSair />} />

@@ -31,6 +31,26 @@ export default function MediaBlock({ media, alt = '', style, radius = 16, placeh
     );
   }
 
+  if (type === 'audio') {
+    return (
+      <div
+        style={{
+          ...boxStyle,
+          background: 'var(--ink)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 14,
+          padding: 20,
+        }}
+      >
+        <span style={{ fontSize: 30 }} aria-hidden="true">🎧</span>
+        <audio controls src={resolveUrl(url)} title={alt || 'Áudio'} style={{ width: '100%', maxWidth: 320 }} />
+      </div>
+    );
+  }
+
   // video (youtube / tiktok / instagram)
   const embed = getEmbedInfo(url);
   if (!embed) {

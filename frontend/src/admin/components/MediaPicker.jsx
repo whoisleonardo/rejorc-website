@@ -7,7 +7,7 @@ function resolveUrl(url) {
   return url.startsWith('http') ? url : `${API_URL}${url}`;
 }
 
-export default function MediaPicker({ media, onChange, label = 'Imagem / vídeo' }) {
+export default function MediaPicker({ media, onChange, label = 'Mídia (imagem, áudio ou vídeo)' }) {
   const value = media || { type: 'image', url: '' };
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
@@ -27,9 +27,9 @@ export default function MediaPicker({ media, onChange, label = 'Imagem / vídeo'
     setError('');
     try {
       const res = await api.uploadImage(file);
-      onChange({ type: 'image', url: res.url });
+      onChange({ type: value.type === 'audio' ? 'audio' : 'image', url: res.url });
     } catch (err) {
-      setError(err.message || 'Falha ao enviar imagem.');
+      setError(err.message || 'Falha ao enviar o arquivo.');
     } finally {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = '';
@@ -57,6 +57,8 @@ export default function MediaPicker({ media, onChange, label = 'Imagem / vídeo'
           {value.url ? (
             value.type === 'image' ? (
               <img src={resolveUrl(value.url)} alt="" />
+            ) : value.type === 'audio' ? (
+              <audio controls src={resolveUrl(value.url)} style={{ width: '100%' }} />
             ) : (
               'vídeo definido ✓'
             )
@@ -66,16 +68,22 @@ export default function MediaPicker({ media, onChange, label = 'Imagem / vídeo'
         </div>
 
         <div style={{ flex: 1, minWidth: 220 }}>
-          {value.type === 'image' ? (
+          {value.type === 'image' || value.type === 'audio' ? (
             <>
-              <input type="file" accept="image/*" ref={fileRef} onChange={handleFile} style={{ marginBottom: 8 }} />
+              <input
+                type="file"
+                accept={value.type === 'audio' ? 'audio/mpeg,audio/mp4,audio/x-m4a,audio/ogg,audio/wav,.mp3,.m4a,.ogg,.wav' : 'image/*'}
+                ref={fileRef}
+                onChange={handleFile}
+                style={{ marginBottom: 8 }}
+              />
               <input
                 type="url"
-                placeholder="ou cole a URL de uma imagem"
+                placeholder={value.type === 'audio' ? 'ou cole a URL de um áudio (MP3, M4A, OGG, WAV)' : 'ou cole a URL de uma imagem'}
                 value={value.url || ''}
                 onChange={(e) => updateUrl(e.target.value)}
               />
-              {uploading && <div style={{ fontSize: 13, color: '#21181499', marginTop: 6 }}>Enviando imagem…</div>}
+              {uploading && <div style={{ fontSize: 13, color: '#21181499', marginTop: 6 }}>Enviando arquivo…</div>}
             </>
           ) : (
             <input

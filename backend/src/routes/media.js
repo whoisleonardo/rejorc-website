@@ -9,18 +9,28 @@ const { logAction } = require('../utils/audit');
 const router = express.Router();
 
 const { UPLOAD_DIR } = require('../utils/paths');
-const ALLOWED_MIME = new Set(['image/png', 'image/jpeg', 'image/webp', 'image/gif']);
+const ALLOWED_MIME = new Set([
+  'image/png', 'image/jpeg', 'image/webp', 'image/gif',
+  'audio/mpeg', 'audio/mp3', 'audio/mp4', 'audio/x-m4a', 'audio/ogg', 'audio/wav', 'audio/x-wav',
+]);
 // Extensao permitida -> tipo real esperado (jpg e jpeg sao o mesmo formato).
-const EXT_TO_TYPE = { '.png': 'png', '.jpg': 'jpeg', '.jpeg': 'jpeg', '.webp': 'webp', '.gif': 'gif' };
+const EXT_TO_TYPE = {
+  '.png': 'png', '.jpg': 'jpeg', '.jpeg': 'jpeg', '.webp': 'webp', '.gif': 'gif',
+  '.mp3': 'mp3', '.m4a': 'm4a', '.ogg': 'ogg', '.wav': 'wav',
+};
 
 // O mimetype e o nome do arquivo vem do navegador e podem ser falsificados,
 // entao alem do filtro abaixo os primeiros bytes do arquivo sao conferidos
-// depois de salvo (sniffImageType) — se nao for uma imagem de verdade, apaga.
-function sniffImageType(buf) {
+// depois de salvo (sniffMediaType) — se nao for imagem/audio de verdade, apaga.
+function sniffMediaType(buf) {
   if (buf.length >= 8 && buf.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))) return 'png';
   if (buf.length >= 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return 'jpeg';
   if (buf.length >= 6 && ['GIF87a', 'GIF89a'].includes(buf.subarray(0, 6).toString('ascii'))) return 'gif';
   if (buf.length >= 12 && buf.subarray(0, 4).toString('ascii') === 'RIFF' && buf.subarray(8, 12).toString('ascii') === 'WEBP') return 'webp';
+  if (buf.length >= 3 && (buf.subarray(0, 3).toString('ascii') === 'ID3' || (buf[0] === 0xff && (buf[1] & 0xe0) === 0xe0))) return 'mp3';
+  if (buf.length >= 8 && buf.subarray(4, 8).toString('ascii') === 'ftyp') return 'm4a';
+  if (buf.length >= 4 && buf.subarray(0, 4).toString('ascii') === 'OggS') return 'ogg';
+  if (buf.length >= 12 && buf.subarray(0, 4).toString('ascii') === 'RIFF' && buf.subarray(8, 12).toString('ascii') === 'WAVE') return 'wav';
   return null;
 }
 
@@ -35,11 +45,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: 8 * 1024 * 1024 }, // 8MB
+  limits: { fileSize: 25 * 1024 * 1024 }, // 25MB (audios sao maiores que imagens)
   fileFilter: (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
     if (!ALLOWED_MIME.has(file.mimetype) || !(ext in EXT_TO_TYPE)) {
-      return cb(new Error('Formato de imagem nao suportado. Use PNG, JPG, WEBP ou GIF.'));
+      return cb(new Error('Formato nao suportado. Imagens: PNG, JPG, WEBP, GIF. Audios: MP3, M4A, OGG, WAV.'));
     }
     cb(null, true);
   },
@@ -59,16 +69,16 @@ router.post('/upload', requireAuth, (req, res) => {
     let realType = null;
     try {
       const fd = fs.openSync(req.file.path, 'r');
-      const head = Buffer.alloc(12);
-      fs.readSync(fd, head, 0, 12, 0);
+      const head = Buffer.alloc(16);
+      fs.readSync(fd, head, 0, 16, 0);
       fs.closeSync(fd);
-      realType = sniffImageType(head);
+      realType = sniffMediaType(head);
     } catch (e) {
       realType = null;
     }
     if (realType !== EXT_TO_TYPE[ext]) {
       fs.unlink(req.file.path, () => {});
-      return res.status(400).json({ error: 'O arquivo enviado nao e uma imagem valida (PNG, JPG, WEBP ou GIF).' });
+      return res.status(400).json({ error: 'O arquivo enviado nao corresponde a um formato valido de imagem ou audio.' });
     }
 
     const url = `/uploads/${req.file.filename}`;

@@ -13,8 +13,8 @@ export default function FotosAdmin() {
   return (
     <div>
       <div className="admin-header">
-        <h1>Fotos & vídeos</h1>
-        <p>Galeria de registros do projeto. Aceita imagens ou vídeos do YouTube, TikTok e Reels do Instagram.</p>
+        <h1>Mídias</h1>
+        <p>Galeria de registros do projeto. Aceita imagens, áudios (MP3, M4A, OGG, WAV) e vídeos do YouTube, TikTok e Reels do Instagram.</p>
       </div>
 
       {loading || !data ? (

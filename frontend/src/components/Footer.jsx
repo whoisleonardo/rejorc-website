@@ -8,7 +8,7 @@ const NAV_ITEMS = [
   { to: '/', label: 'Início' },
   { to: '/sobre', label: 'Sobre' },
   { to: '/materias', label: 'Matérias' },
-  { to: '/fotos', label: 'Fotos' },
+  { to: '/midias', label: 'Mídias' },
   { to: '/atualizacoes', label: 'Atualizações' },
   { to: '/contato', label: 'Contato' },
 ];

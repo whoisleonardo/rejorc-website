@@ -41,6 +41,7 @@ export function getEmbedInfo(rawUrl) {
 
 export const VIDEO_TYPES = [
   { value: 'image', label: 'Imagem' },
+  { value: 'audio', label: 'Áudio' },
   { value: 'youtube', label: 'Vídeo do YouTube' },
   { value: 'tiktok', label: 'Vídeo do TikTok' },
   { value: 'instagram', label: 'Reels do Instagram' },
