@@ -10,7 +10,9 @@ const VALID_KEYS = new Set(Object.keys(defaultContent));
 
 function readSection(key) {
   const row = db.prepare('SELECT data FROM content_sections WHERE section_key = ?').get(key);
-  if (row) return JSON.parse(row.data);
+  // Mescla com o conteudo padrao: campos novos adicionados ao codigo depois
+  // do site ja estar no ar aparecem preenchidos, sem precisar de migracao.
+  if (row) return { ...(defaultContent[key] || {}), ...JSON.parse(row.data) };
   return defaultContent[key] ?? null;
 }
 

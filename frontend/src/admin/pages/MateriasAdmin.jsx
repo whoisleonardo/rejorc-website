@@ -28,6 +28,31 @@ export default function MateriasAdmin() {
         <div className="empty-state">Carregando…</div>
       ) : (
         <div className="admin-card">
+          <h2 style={{ marginTop: 0 }}>Topo da página "Matérias"</h2>
+          <div className="field-row">
+            <TextField label="Selo (etiqueta pequena)" value={data.badge || ''} onChange={(v) => setData({ ...data, badge: v })} />
+            <TextField label="Título da página" value={data.title || ''} onChange={(v) => setData({ ...data, title: v })} />
+          </div>
+          <TextAreaField label="Subtítulo" rows={2} value={data.subtitle || ''} onChange={(v) => setData({ ...data, subtitle: v })} />
+
+          <h2>Aviso do acervo (faixa azul)</h2>
+          <TextAreaField
+            label="Texto do aviso (deixe vazio para esconder a faixa)"
+            rows={2}
+            value={data.bannerText || ''}
+            onChange={(v) => setData({ ...data, bannerText: v })}
+          />
+          <div className="field-row">
+            <TextField label="Texto do botão" value={data.bannerButtonLabel || ''} onChange={(v) => setData({ ...data, bannerButtonLabel: v })} />
+            <TextField
+              label="Link do botão (o botão só aparece se preenchido)"
+              placeholder="https://..."
+              value={data.bannerUrl || ''}
+              onChange={(v) => setData({ ...data, bannerUrl: v })}
+            />
+          </div>
+
+          <h2>Matérias</h2>
           <RepeatList
             items={data.items}
             onChange={(items) => setData({ ...data, items })}

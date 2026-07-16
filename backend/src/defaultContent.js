@@ -44,6 +44,12 @@ const defaultContent = {
   },
 
   materias: {
+    badge: 'Matérias',
+    title: 'Reportagens produzidas pela rede',
+    subtitle: 'Acompanhe as reportagens, entrevistas, colunas e opiniões produzidas pelos estudantes do REJORC.',
+    bannerText: 'As reportagens completas e o acervo histórico do curso ficam no site do jornal Comunicação.',
+    bannerButtonLabel: 'Visitar site do jornal ↗',
+    bannerUrl: '',
     items: [
       { id: 'm1', tag: 'Reportagem', title: 'Como a comunidade ao redor da UFPR enxerga o campus', excerpt: 'Uma conversa com moradores do entorno sobre a relação entre universidade e bairro.', color: COLORS.purple, category: 'reportagem', date: 'Jun 2026', image: { type: 'image', url: '' }, link: '' },
       { id: 'm2', tag: 'Entrevista', title: 'Professor da UFPR fala sobre o papel do jornalismo local', excerpt: 'Bate-papo sobre os desafios e oportunidades do jornalismo feito de perto.', color: COLORS.gold, category: 'entrevista', date: 'Mai 2026', image: { type: 'image', url: '' }, link: '' },
