@@ -32,9 +32,11 @@ app.set('trust proxy', Number(process.env.TRUST_PROXY || 1));
 // carregue as imagens de /uploads.
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 
+// FRONTEND_URL aceita mais de uma origem separada por virgula
+// (ex: site na Vercel + site servido pelo proprio backend).
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
+    origin: process.env.FRONTEND_URL.split(',').map((s) => s.trim()).filter(Boolean),
   })
 );
 app.use(express.json({ limit: '2mb' }));

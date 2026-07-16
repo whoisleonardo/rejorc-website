@@ -97,6 +97,12 @@ function getFooterSocials() {
   }
 }
 
+// FRONTEND_URL pode ter varias origens separadas por virgula; a primeira e
+// o endereco principal do site, usado nos links dos e-mails.
+function primaryFrontendUrl() {
+  return process.env.FRONTEND_URL.split(',')[0].trim().replace(/\/$/, '');
+}
+
 function validateDraft(req, res) {
   if (!isConfigured()) {
     res.status(400).json({
@@ -150,7 +156,7 @@ router.post('/send-test', requireAuth, async (req, res, next) => {
       await sendBatch({
         subject: `[TESTE] ${draft.subject}`,
         html: buildEmailHtml(draft.content, getFooterSocials()),
-        recipients: [{ email: req.user.email, params: { unsubscribeUrl: process.env.FRONTEND_URL } }],
+        recipients: [{ email: req.user.email, params: { unsubscribeUrl: primaryFrontendUrl() } }],
       });
     } catch (err) {
       return res.status(502).json({ error: `Falha no envio de teste: ${err.message}` });
@@ -180,7 +186,7 @@ router.post('/send', requireAuth, async (req, res, next) => {
     }
 
     const emailHtml = buildEmailHtml(draft.content, getFooterSocials());
-    const frontend = process.env.FRONTEND_URL.replace(/\/$/, '');
+    const frontend = primaryFrontendUrl();
     const BATCH = 400;
     let ok = 0;
     let fail = 0;

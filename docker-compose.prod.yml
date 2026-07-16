@@ -16,7 +16,8 @@ services:
       - ./backend/.env
     environment:
       DATA_DIR: /data
-      FRONTEND_URL: https://${DOMAIN}
+      # Pode ser sobrescrito no .env com uma lista (ex: dominio proprio + Vercel)
+      FRONTEND_URL: ${FRONTEND_URL:-https://${DOMAIN}}
       API_PUBLIC_URL: https://${DOMAIN}
       TRUST_PROXY: ${TRUST_PROXY:-1}
     volumes:
