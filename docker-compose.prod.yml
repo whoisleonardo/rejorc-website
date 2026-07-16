@@ -18,6 +18,7 @@ services:
       DATA_DIR: /data
       FRONTEND_URL: https://${DOMAIN}
       API_PUBLIC_URL: https://${DOMAIN}
+      TRUST_PROXY: ${TRUST_PROXY:-1}
     volumes:
       # Banco (data.sqlite) e uploads vivem aqui. Para backup:
       # docker compose -f docker-compose.prod.yml exec backend tar czf - -C /data . > backup.tar.gz
@@ -31,7 +32,9 @@ services:
         VITE_API_URL: https://${DOMAIN}
     restart: unless-stopped
     environment:
-      DOMAIN: ${DOMAIN}
+      # Endereco que o Caddy interno escuta. Padrao: o proprio dominio (HTTPS
+      # direto). Atras de outro proxy, use CADDY_SITE=:80 (HTTP interno).
+      DOMAIN: ${CADDY_SITE:-${DOMAIN}}
     ports:
       - "80:80"
       - "443:443"

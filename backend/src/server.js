@@ -23,9 +23,10 @@ if (!process.env.FRONTEND_URL) {
 
 const app = express();
 
-// Em producao a API costuma ficar atras de um proxy (nginx, Railway, etc.);
-// isso faz req.ip refletir o IP real do visitante (usado no rate limit e na auditoria).
-app.set('trust proxy', 1);
+// Em producao a API fica atras de proxy; isso faz req.ip refletir o IP real
+// do visitante (usado no rate limit e na auditoria). TRUST_PROXY = numero de
+// proxies na frente (1 = Caddy do compose; 2 = Caddy externo + o do compose).
+app.set('trust proxy', Number(process.env.TRUST_PROXY || 1));
 
 // Headers de seguranca. CORP "cross-origin" permite que o site (outro dominio)
 // carregue as imagens de /uploads.

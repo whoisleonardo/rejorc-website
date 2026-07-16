@@ -1,3 +1,11 @@
+# Quando ha outro proxy na frente (rede interna), preserva o IP real do
+# visitante no X-Forwarded-For. Em acesso direto isso nao tem efeito.
+{
+	servers {
+		trusted_proxies static private_ranges
+	}
+}
+
 {$DOMAIN} {
 	encode gzip
 
