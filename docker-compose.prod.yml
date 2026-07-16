@@ -1,0 +1,47 @@
+# Producao: docker compose -f docker-compose.prod.yml up -d --build
+#
+# Requer na raiz um arquivo .env com:  DOMAIN=seusite.duckdns.org
+# e o backend/.env preenchido com os valores de producao (JWT_SECRET novo,
+# senha nova, FRONTEND_URL=https://SEU_DOMINIO, API_PUBLIC_URL=https://SEU_DOMINIO).
+#
+# Site e API ficam no MESMO dominio: o Caddy serve o site compilado e
+# encaminha /api e /uploads para o backend. HTTPS e automatico (Let's Encrypt).
+
+services:
+  backend:
+    build: ./backend
+    command: sh -c "npm run seed && npm start"
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      DATA_DIR: /data
+      FRONTEND_URL: https://${DOMAIN}
+      API_PUBLIC_URL: https://${DOMAIN}
+    volumes:
+      # Banco (data.sqlite) e uploads vivem aqui. Para backup:
+      # docker compose -f docker-compose.prod.yml exec backend tar czf - -C /data . > backup.tar.gz
+      - backend_data:/data
+
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+      args:
+        VITE_API_URL: https://${DOMAIN}
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - backend
+
+volumes:
+  backend_data:
+  caddy_data:
+  caddy_config:
