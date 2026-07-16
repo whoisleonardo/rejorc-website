@@ -58,12 +58,18 @@ img { max-width: 100%; display: block; }
   outline-offset: 2px;
 }
 
+/* Botao e menu de navegacao do celular: so existem em telas estreitas */
+.mobile-menu-btn { display: none; }
+.mobile-menu { display: none; }
+
 @media (max-width: 860px) {
   .container { padding-left: 20px; padding-right: 20px; }
   .grid-3 { grid-template-columns: 1fr !important; }
   .grid-2 { grid-template-columns: 1fr !important; }
   .grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
   .hide-mobile { display: none !important; }
+  .mobile-menu-btn { display: flex; }
+  .mobile-menu { display: block; }
 }
 
 @media (prefers-reduced-motion: reduce) {

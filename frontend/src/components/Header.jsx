@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useContent } from '../content/ContentContext';
 import { API_URL } from '../api';
@@ -20,6 +21,7 @@ export default function Header() {
   const { content } = useContent();
   const site = content.site || {};
   const logoUrl = site.logoHeader?.url;
+  const [open, setOpen] = useState(false);
 
   return (
     <header
@@ -76,6 +78,7 @@ export default function Header() {
 
         <Link
           to="/contato"
+          className="hide-mobile"
           style={{
             flex: 'none',
             fontFamily: 'var(--font-display)',
@@ -91,7 +94,83 @@ export default function Header() {
         >
           Assine a Newsletter
         </Link>
+
+        <button
+          type="button"
+          className="mobile-menu-btn"
+          aria-label={open ? 'Fechar menu' : 'Abrir menu'}
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 44,
+            height: 44,
+            border: '2px solid #21181433',
+            borderRadius: 12,
+            background: 'transparent',
+            color: '#211814',
+            cursor: 'pointer',
+            flex: 'none',
+          }}
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+            {open ? (
+              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+            ) : (
+              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+            )}
+          </svg>
+        </button>
       </div>
+
+      {open && (
+        <nav className="mobile-menu" style={{ borderTop: '1.5px solid #21181422', background: '#F5F1EA', padding: '10px 20px 22px' }}>
+          {NAV_ITEMS.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.end}
+              onClick={() => setOpen(false)}
+              style={({ isActive }) => ({
+                display: 'block',
+                fontFamily: 'var(--font-body)',
+                fontWeight: 800,
+                fontSize: 16,
+                textTransform: 'uppercase',
+                letterSpacing: '0.01em',
+                color: isActive ? '#211814' : '#211814CC',
+                textDecoration: 'none',
+                padding: '14px 12px',
+                borderRadius: 12,
+                background: isActive ? '#21181414' : 'transparent',
+              })}
+            >
+              {item.label}
+            </NavLink>
+          ))}
+          <Link
+            to="/contato"
+            onClick={() => setOpen(false)}
+            style={{
+              display: 'block',
+              textAlign: 'center',
+              fontFamily: 'var(--font-display)',
+              fontWeight: 700,
+              fontSize: 16,
+              color: '#211814',
+              background: 'var(--gold)',
+              padding: '14px 22px',
+              borderRadius: 999,
+              textDecoration: 'none',
+              boxShadow: '0 3px 0 #21181422',
+              marginTop: 12,
+            }}
+          >
+            Assine a Newsletter
+          </Link>
+        </nav>
+      )}
     </header>
   );
 }
