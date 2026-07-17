@@ -53,8 +53,19 @@ export default function Home() {
           </div>
         </div>
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ position: 'absolute', width: 420, height: 420, borderRadius: '50%', background: '#F4B03026' }} />
-          <div style={{ position: 'relative', width: 340 }}>
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: 'min(420px, 82vw)',
+              aspectRatio: '1 / 1',
+              borderRadius: '50%',
+              background: '#F4B03026',
+            }}
+          />
+          <div style={{ position: 'relative', width: 'min(340px, 100%)' }}>
             <MediaBlock media={hero.heroImage} alt="" radius={0} style={{ background: 'transparent' }} placeholderLabel="[ imagem de destaque ]" />
           </div>
         </div>
