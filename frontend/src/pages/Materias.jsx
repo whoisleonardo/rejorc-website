@@ -92,15 +92,26 @@ export default function Materias() {
               </>
             );
             // Com texto completo cadastrado, o card abre a matéria num quadro;
-            // sem texto, continua levando ao link externo (comportamento antigo).
-            return hasBody(m) ? (
-              <button key={m.id} type="button" onClick={() => setAberta(m)} style={{ ...cardStyle, font: 'inherit' }}>
+            // sem texto mas com link externo, leva ao link; sem nenhum dos
+            // dois, o card não é clicável (evita o pulo para o topo do "#").
+            if (hasBody(m)) {
+              return (
+                <button key={m.id} type="button" onClick={() => setAberta(m)} style={{ ...cardStyle, font: 'inherit' }}>
+                  {inner}
+                </button>
+              );
+            }
+            if (m.link) {
+              return (
+                <a key={m.id} href={m.link} target="_blank" rel="noreferrer" style={cardStyle}>
+                  {inner}
+                </a>
+              );
+            }
+            return (
+              <div key={m.id} style={{ ...cardStyle, cursor: 'default' }}>
                 {inner}
-              </button>
-            ) : (
-              <a key={m.id} href={m.link || '#'} target={m.link ? '_blank' : undefined} rel="noreferrer" style={cardStyle}>
-                {inner}
-              </a>
+              </div>
             );
           })}
         </div>
