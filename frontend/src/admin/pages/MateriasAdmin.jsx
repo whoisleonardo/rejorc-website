@@ -2,6 +2,7 @@ import { useSection } from '../hooks/useSection';
 import { TextField, TextAreaField, ColorField, SaveBar } from '../components/Fields';
 import MediaPicker from '../components/MediaPicker';
 import RepeatList from '../components/RepeatList';
+import RichTextField from '../components/RichTextField';
 
 const CATEGORIAS = [
   ['reportagem', 'Reportagem'],
@@ -68,6 +69,7 @@ export default function MateriasAdmin() {
               date: '',
               image: { type: 'image', url: '' },
               link: '',
+              body: '',
             })}
             renderItem={(item, i, update) => (
               <>
@@ -92,6 +94,12 @@ export default function MateriasAdmin() {
                   <TextField label="Link externo (opcional)" placeholder="https://..." value={item.link} onChange={(v) => update({ link: v })} />
                 </div>
                 <MediaPicker label="Imagem/vídeo da matéria" media={item.image} onChange={(m) => update({ image: m })} />
+                <RichTextField
+                  label="Matéria completa (ao preencher, clicar no card abre a matéria num quadro; se ficar vazio, o card leva ao link externo)"
+                  value={item.body || ''}
+                  onChange={(v) => update({ body: v })}
+                  placeholder="Escreva aqui o texto completo da matéria…"
+                />
               </>
             )}
           />

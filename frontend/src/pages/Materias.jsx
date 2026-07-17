@@ -1,6 +1,11 @@
 import { useMemo, useState } from 'react';
 import { useContent } from '../content/ContentContext';
 import MediaBlock from '../components/MediaBlock';
+import MateriaModal from '../components/MateriaModal';
+
+function hasBody(m) {
+  return Boolean(m.body && m.body.replace(/<[^>]*>/g, '').trim());
+}
 
 const CATS = [
   ['todas', 'Todas'],
@@ -15,6 +20,7 @@ export default function Materias() {
   const section = content.materias || {};
   const all = section.items || [];
   const [filter, setFilter] = useState('todas');
+  const [aberta, setAberta] = useState(null);
 
   const filtered = useMemo(() => {
     if (filter === 'todas') return all;
@@ -72,19 +78,35 @@ export default function Materias() {
       <section className="container" style={{ padding: '24px 32px 100px' }}>
         <div className="grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 26 }}>
           {filtered.length === 0 && <div className="empty-state">Nenhuma matéria nessa categoria ainda.</div>}
-          {filtered.map((m) => (
-            <a key={m.id} href={m.link || '#'} target={m.link ? '_blank' : undefined} rel="noreferrer" style={{ textDecoration: 'none', display: 'block', background: '#FFF', borderRadius: 20, overflow: 'hidden', border: '1.5px solid #21181414' }}>
-              <MediaBlock media={m.image} alt={m.title} radius={0} style={{ height: 170 }} placeholderLabel="[ foto da matéria ]" />
-              <div style={{ padding: 22 }}>
-                <div style={{ fontWeight: 800, fontSize: 12.5, letterSpacing: '0.04em', textTransform: 'uppercase', color: m.color, marginBottom: 10 }}>{m.tag}</div>
-                <h3 style={{ font: '700 19px/1.25 var(--font-display)', margin: '0 0 8px' }}>{m.title}</h3>
-                <p style={{ fontSize: 14, lineHeight: 1.55, color: '#21181499', margin: '0 0 12px' }}>{m.excerpt}</p>
-                <div style={{ fontSize: 13, color: '#21181480' }}>{m.date}</div>
-              </div>
-            </a>
-          ))}
+          {filtered.map((m) => {
+            const cardStyle = { textDecoration: 'none', display: 'block', width: '100%', textAlign: 'left', padding: 0, cursor: 'pointer', background: '#FFF', borderRadius: 20, overflow: 'hidden', border: '1.5px solid #21181414' };
+            const inner = (
+              <>
+                <MediaBlock media={m.image} alt={m.title} radius={0} style={{ height: 170 }} placeholderLabel="[ foto da matéria ]" />
+                <div style={{ padding: 22 }}>
+                  <div style={{ fontWeight: 800, fontSize: 12.5, letterSpacing: '0.04em', textTransform: 'uppercase', color: m.color, marginBottom: 10 }}>{m.tag}</div>
+                  <h3 style={{ font: '700 19px/1.25 var(--font-display)', color: '#211814', margin: '0 0 8px' }}>{m.title}</h3>
+                  <p style={{ fontSize: 14, lineHeight: 1.55, color: '#21181499', margin: '0 0 12px' }}>{m.excerpt}</p>
+                  <div style={{ fontSize: 13, color: '#21181480' }}>{m.date}</div>
+                </div>
+              </>
+            );
+            // Com texto completo cadastrado, o card abre a matéria num quadro;
+            // sem texto, continua levando ao link externo (comportamento antigo).
+            return hasBody(m) ? (
+              <button key={m.id} type="button" onClick={() => setAberta(m)} style={{ ...cardStyle, font: 'inherit' }}>
+                {inner}
+              </button>
+            ) : (
+              <a key={m.id} href={m.link || '#'} target={m.link ? '_blank' : undefined} rel="noreferrer" style={cardStyle}>
+                {inner}
+              </a>
+            );
+          })}
         </div>
       </section>
+
+      <MateriaModal materia={aberta} onClose={() => setAberta(null)} />
     </div>
   );
 }

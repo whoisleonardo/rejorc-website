@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('../db');
 const { requireAuth } = require('../middleware/auth');
 const { logAction } = require('../utils/audit');
+const { sanitizeArticleHtml } = require('../utils/richText');
 const { defaultContent } = require('../defaultContent');
 
 const router = express.Router();
@@ -43,6 +44,15 @@ router.put('/:key', requireAuth, (req, res) => {
   const data = req.body;
   if (data === undefined || data === null || typeof data !== 'object') {
     return res.status(400).json({ error: 'Corpo da requisicao invalido.' });
+  }
+
+  // O texto completo das materias vira HTML no site publico — sanitiza aqui.
+  if (key === 'materias' && Array.isArray(data.items)) {
+    data.items = data.items.map((item) =>
+      item && typeof item === 'object'
+        ? { ...item, body: item.body ? sanitizeArticleHtml(item.body) : '' }
+        : item
+    );
   }
 
   db.prepare(

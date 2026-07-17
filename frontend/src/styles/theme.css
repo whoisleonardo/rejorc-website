@@ -58,6 +58,27 @@ img { max-width: 100%; display: block; }
   outline-offset: 2px;
 }
 
+/* Corpo das materias completas (HTML vindo do editor do painel) */
+.article-body { font-size: 16.5px; line-height: 1.75; color: #211814; overflow-wrap: break-word; }
+.article-body p { margin: 0 0 14px; }
+.article-body h1, .article-body h2, .article-body h3, .article-body h4 {
+  font-family: var(--font-display); line-height: 1.25; margin: 24px 0 12px;
+}
+.article-body img { max-width: 100%; height: auto; border-radius: 12px; margin: 8px 0; }
+.article-body blockquote {
+  border-left: 4px solid var(--gold); margin: 16px 0; padding: 6px 0 6px 18px; color: #211814B3;
+}
+.article-body a { color: var(--purple); }
+.article-body ol, .article-body ul { padding-left: 26px; margin: 0 0 14px; }
+.article-body li { margin-bottom: 4px; }
+.article-body li[data-list='bullet'] { list-style-type: disc; }
+.article-body .ql-align-center { text-align: center; }
+.article-body .ql-align-right { text-align: right; }
+.article-body .ql-align-justify { text-align: justify; }
+.article-body .ql-indent-1 { margin-left: 26px; }
+.article-body .ql-indent-2 { margin-left: 52px; }
+.article-body .ql-indent-3 { margin-left: 78px; }
+
 /* Botao e menu de navegacao do celular: so existem em telas estreitas */
 .mobile-menu-btn { display: none; }
 .mobile-menu { display: none; }
