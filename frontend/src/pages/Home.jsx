@@ -16,7 +16,7 @@ export default function Home() {
       {/* HERO */}
       <section
         className="container grid-2"
-        style={{ padding: '44px 32px 96px', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: 56, alignItems: 'center' }}
+        style={{ padding: '36px 32px 96px', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: 56, alignItems: 'center' }}
       >
         <div>
           <div
