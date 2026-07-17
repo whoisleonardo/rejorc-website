@@ -29,7 +29,7 @@ export default function Materias() {
 
   return (
     <div>
-      <section className="container" style={{ padding: '72px 32px 32px' }}>
+      <section className="container" style={{ padding: '36px 32px 32px' }}>
         <div style={{ display: 'inline-block', fontWeight: 800, fontSize: 13, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--purple)', background: '#573B6F1A', padding: '8px 16px', borderRadius: 999, marginBottom: 20 }}>
           {section.badge || 'Matérias'}
         </div>

@@ -11,7 +11,7 @@ export default function Sobre() {
 
   return (
     <div>
-      <section className="container grid-2" style={{ padding: '80px 32px 64px', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: 48, alignItems: 'center' }}>
+      <section className="container grid-2" style={{ padding: '40px 32px 64px', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: 48, alignItems: 'center' }}>
         <div>
           <div style={{ display: 'inline-block', fontWeight: 800, fontSize: 13, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--purple)', background: '#573B6F1A', padding: '8px 16px', borderRadius: 999, marginBottom: 22 }}>
             {s.badge}

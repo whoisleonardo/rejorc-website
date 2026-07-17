@@ -8,7 +8,7 @@ export default function Atualizacoes() {
 
   return (
     <div>
-      <section className="container" style={{ padding: '72px 32px 24px' }}>
+      <section className="container" style={{ padding: '36px 32px 24px' }}>
         <div style={{ display: 'inline-block', fontWeight: 800, fontSize: 13, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--gold)', background: '#F4B03026', padding: '8px 16px', borderRadius: 999, marginBottom: 20 }}>
           {a.badge}
         </div>

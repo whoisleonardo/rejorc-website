@@ -9,7 +9,7 @@ export default function Fotos() {
 
   return (
     <div>
-      <section className="container" style={{ padding: '72px 32px 40px' }}>
+      <section className="container" style={{ padding: '36px 32px 40px' }}>
         <div style={{ display: 'inline-block', fontWeight: 800, fontSize: 13, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--green)', background: '#37805420', padding: '8px 16px', borderRadius: 999, marginBottom: 20 }}>
           {section.badge || 'Registros'}
         </div>
