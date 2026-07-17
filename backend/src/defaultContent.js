@@ -61,6 +61,12 @@ const defaultContent = {
   },
 
   fotos: {
+    badge: 'Registros',
+    title: 'Coisas que já fizemos',
+    subtitle: 'Registros de oficinas, coberturas e bastidores do REJORC — em fotos, vídeos e áudios.',
+    ctaTitle: 'Fez parte de algum projeto com a gente?',
+    ctaText: 'Manda sua foto, vídeo ou áudio e a gente inclui no acervo do REJORC.',
+    ctaButtonLabel: 'Enviar registro',
     items: [
       { id: 'f1', type: 'image', url: '', label: 'Oficina de jornalismo' },
       { id: 'f2', type: 'image', url: '', label: 'Cobertura de evento' },

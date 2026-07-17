@@ -36,13 +36,21 @@ export function getEmbedInfo(rawUrl) {
     if (match) return { platform: 'instagram', embedUrl: `https://www.instagram.com/${match[1]}/${match[2]}/embed` };
   }
 
+  // Spotify: open.spotify.com/[intl-xx/]track|episode|show|album|playlist/ID
+  if (host === 'open.spotify.com') {
+    const match = url.pathname.match(/^\/(?:intl-[a-z-]+\/)?(track|episode|show|album|playlist)\/([A-Za-z0-9]+)/);
+    if (match) return { platform: 'spotify', embedUrl: `https://open.spotify.com/embed/${match[1]}/${match[2]}` };
+  }
+
   return null;
 }
 
+// Tipos oferecidos no painel. YouTube saiu das opcoes de cadastro, mas
+// itens antigos com type "youtube" continuam sendo exibidos no site.
 export const VIDEO_TYPES = [
   { value: 'image', label: 'Imagem' },
   { value: 'audio', label: 'Áudio' },
-  { value: 'youtube', label: 'Vídeo do YouTube' },
+  { value: 'spotify', label: 'Spotify' },
   { value: 'tiktok', label: 'Vídeo do TikTok' },
   { value: 'instagram', label: 'Reels do Instagram' },
 ];

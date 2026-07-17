@@ -60,7 +60,7 @@ export default function MediaPicker({ media, onChange, label = 'Mídia (imagem, 
             ) : value.type === 'audio' ? (
               <audio controls src={resolveUrl(value.url)} style={{ width: '100%' }} />
             ) : (
-              'vídeo definido ✓'
+              'mídia definida ✓'
             )
           ) : (
             'sem mídia'
@@ -89,8 +89,8 @@ export default function MediaPicker({ media, onChange, label = 'Mídia (imagem, 
             <input
               type="url"
               placeholder={
-                value.type === 'youtube'
-                  ? 'Cole o link do vídeo do YouTube'
+                value.type === 'spotify'
+                  ? 'Cole o link do Spotify (episódio, música, playlist…)'
                   : value.type === 'tiktok'
                   ? 'Cole o link do vídeo do TikTok'
                   : 'Cole o link do Reels do Instagram'
